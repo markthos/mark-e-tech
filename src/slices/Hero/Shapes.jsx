@@ -25,7 +25,7 @@ export default function Shapes() {
                 blur={1}
                 far={9}
                 />
-                <Environment preset="studio" />
+                <Environment preset="sunset" />
             </Suspense>
             </Canvas>
         </div>
@@ -47,7 +47,7 @@ function Geometries() {
         {
           position: [-1.4, 2, -4],
           r: 0.6,
-          geometry: new THREE.DodecahedronGeometry(1.5), // Soccer ball
+          geometry: new THREE.DodecahedronGeometry(1.5), // Ball
         },
         {
           position: [-0.8, -0.75, 5],
@@ -72,7 +72,17 @@ function Geometries() {
         new THREE.MeshStandardMaterial({ color: 0xef5817, roughness: 0.3, metalness: 0.8 }),
         new THREE.MeshStandardMaterial({ color: 0x160d0b, roughness: 0.1, metalness: 0.1 }),
         new THREE.MeshStandardMaterial({ color: 0xa67bc5, roughness: 0.4, metalness: 0.6 }),
-    ]
+    ];
+
+    // audio
+    const soundEffects = [
+        new Audio("/sounds/switch/impactWood_light_000.ogg"),
+        new Audio("/sounds/switch/impactWood_light_001.ogg"),
+        new Audio("/sounds/switch/impactWood_light_002.ogg"),
+        new Audio("/sounds/switch/impactWood_light_003.ogg"),
+        new Audio("/sounds/switch/impactWood_light_004.ogg"),
+    ];
+    
 
     // Pass to Geometry
 
@@ -80,6 +90,7 @@ function Geometries() {
         <Geometry 
             key={JSON.stringify(position)}
             position={position.map((p) => p * 2)}
+            soundEffects={soundEffects}
             geometry={geometry}
             materials={materials}
             r={r}
@@ -88,7 +99,7 @@ function Geometries() {
 
 }
 
-function Geometry({ geometry, materials, position, r }) {
+function Geometry({ geometry, materials, position, r, soundEffects}) {
     const meshRef = useRef();
     const [visible, setVisible] = useState(false);
 
@@ -100,6 +111,8 @@ function Geometry({ geometry, materials, position, r }) {
 
     function handleClick(e){
         const mesh = e.object;
+
+        gsap.utils.random(soundEffects).play();
         
         gsap.to(mesh.rotation, { 
             x: `+=${gsap.utils.random(0, 2)}`,
