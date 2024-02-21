@@ -8,6 +8,8 @@ const config: Config = {
     "./src/slices/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {},
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"),
+  ],
 };
 export default config;
