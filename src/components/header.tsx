@@ -18,9 +18,7 @@ export default async function Header() {
                     </li>
                     {settings.data.nav_item.map(({ label, link }, index) => (
                         <li key={index}>
-                            <PrismicNextLink field={link}>
-                                {label}
-                            </PrismicNextLink>
+                            <PrismicNextLink field={link}>{label}</PrismicNextLink>
                         </li>
                     ))}
                     
