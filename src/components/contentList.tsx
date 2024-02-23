@@ -1,23 +1,33 @@
 "use client";
 
-import { Content, isFilled } from '@prismicio/client';
+import { Content, asImageSrc, isFilled } from '@prismicio/client';
 import Link from 'next/link';
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { MdArrowOutward } from 'react-icons/md';
 
 
 type ContentListProps = {
     items: Content.BlogPostDocument[] | Content.ProjectDocument[];
     contentType: Content.ContentIndexSlice['primary']['content_type'];
-    viewMoreText?: Content.ContentIndexSlice['primary']['view_more_text'];
-    fallbackItemImage?: Content.ContentIndexSlice['primary']['fallback_item_image'];
+    viewMoreText: Content.ContentIndexSlice['primary']['view_more_text'];
+    fallbackItemImage: Content.ContentIndexSlice['primary']['fallback_item_image'];
     };
 
 export default function ContentList({items, contentType, viewMoreText = "Read More", fallbackItemImage}: ContentListProps) {
 
     const component = useRef(null)
+    const [currentItem, setCurrentItem] = useState<null | number>(null);
 
     const urlPrefix= contentType === "Blog" ? "/blog" : "/projects";
+
+    const contentImages = items.map((item) => {
+        const image = isFilled.image(item.data.hover_image) ? item.data.hover_image : fallbackItemImage;
+        return asImageSrc(image, {fit: "crop", w: 220, h: 320, exp: -10});
+    });
+
+    const onMouseEnter = (index: number) => {
+        setCurrentItem(index);
+    }
 
 
     return (
@@ -27,7 +37,7 @@ export default function ContentList({items, contentType, viewMoreText = "Read Mo
                     <>
                         {isFilled.keyText(item.data.title) && (
                         
-                            <li key={index} className='list-item opacity-0f'>
+                            <li key={index} className='list-item opacity-0f' onMouseEnter={()=> onMouseEnter(index)}>
                                 <Link href={urlPrefix + "/" + item.uid} className='flex flex-col justify-between border-t border-t-slate-100 py-10 text-slate-200 md:flex-row' aria-label={item.data.title}>
                                     <div className='flex flex-col'>
                                         <span className='text-3xl font-bold'>{item.data.title}</span>
@@ -44,6 +54,14 @@ export default function ContentList({items, contentType, viewMoreText = "Read Mo
                     </>
                 ))}
             </ul>
+        {/* Hover element */}
+        <div
+          className="hover-reveal pointer-events-none absolute left-0 top-0 -z-10 h-[320px] w-[220px] rounded-lg bg-cover bg-center opacity-0f transition-[background] duration-300"
+          style={{
+            backgroundImage:
+              currentItem !== null ? `url(${contentImages[currentItem]})` : ""
+          }}
+        ></div>
         </div>
     )
 }
