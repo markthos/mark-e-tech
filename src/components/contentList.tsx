@@ -129,7 +129,7 @@ export default function ContentList({items, contentType, viewMoreText = "Read Mo
                         
                             <li 
                             key={index} 
-                            className='list-item opacity-0f' 
+                            className='list-item opacity-0' 
                             onMouseEnter={()=> onMouseEnter(index)} 
                             ref={(el)=>(itemsRef.current[index] = el)}
                             >
