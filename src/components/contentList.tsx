@@ -119,8 +119,8 @@ export default function ContentList({items, contentType, viewMoreText = "Read Mo
 
 
     return (
-        <div ref={component}>
-            <ul className='grid border-b border-b-slate-100'
+        <div> 
+            <ul ref={component} className='grid border-b border-b-slate-100'
             onMouseLeave={onMouseLeave}
             >
                 {items.map((item, index) => (
