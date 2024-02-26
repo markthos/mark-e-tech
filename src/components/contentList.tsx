@@ -27,7 +27,7 @@ export default function ContentList({items, contentType, viewMoreText = "Read Mo
 
     const lastMousePosition = useRef({x: 0, y: 0});
 
-    const urlPrefix= contentType === "Blog" ? "/blog" : "/projects";
+    const urlPrefix= contentType === "Blog" ? "/blog" : "/project";
 
     useEffect(() => {
         let ctx = gsap.context(() => {
