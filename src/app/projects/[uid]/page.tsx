@@ -6,15 +6,17 @@ import ContentBody from "@/components/contentBody";
 type Params = { uid: string };
 
 export default async function Page({ params }: { params: Params }) {
-  const client = createClient();
-  const page = await client
-    .getByUID("project", params.uid)
-    .catch(() => notFound());
+    const client = createClient();
+    const page = await client
+        .getByUID("project", params.uid)
+        .catch(() => notFound());
+
 
   return (
   <ContentBody page={page} />
   );
 }
+
 
 export async function generateMetadata({
   params,
