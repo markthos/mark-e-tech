@@ -2,7 +2,19 @@
 	{
 		"__TYPE__": "SharedSliceContent",
 		"variation": "default",
-		"primary": {},
+		"primary": {
+			"text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Culpa non occaecat Lorem non excepteur aute cillum officia quis dolor dolor cupidatat. Ea ut duis qui eu aute."
+						}
+					}
+				]
+			}
+		},
 		"items": []
 	}
 ]
