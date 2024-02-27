@@ -3,6 +3,8 @@ import { components } from "@/slices";
 import Bounded from "@/components/bounded";
 import Heading from "@/components/heading";
 import { Content, DateField, isFilled } from "@prismicio/client";
+import { PrismicNextLink } from "@prismicio/next";
+
 
 
 export default async function ContentBody({ page, }: { page: Content.BlogPostDocument | Content.ProjectDocument }) {
@@ -32,9 +34,15 @@ export default async function ContentBody({ page, }: { page: Content.BlogPostDoc
         ))}
         </div>
         <p className="mt-8 border-b border-slate-600 text-xl font-medium text-slate-300">{formattedDate}</p>
-        <div className="prose prose-lg prose-invert mt-12 w-full max-w-none md:mt-20">
-            <SliceZone slices={page.data.slices} components={components} />
+        <div>
+            <PrismicNextLink field={page.data.link}>{
+                <div className="prose prose-lg prose-invert mt-12 w-full max-w-none md:mt-20">
+                    <SliceZone slices={page.data.slices} components={components}></SliceZone>
+                </div>
+            }
+            </PrismicNextLink>
         </div>
+
     </div>
   
   </Bounded>
