@@ -75,7 +75,7 @@ export default function Avatar({ images, className }: AvatarProps) {
                 gsap.to(".avatar-image", {
                     opacity: 1, // Fade in the new image
                     duration: 0.3, // Set transition time
-                    ease: "power4.inOut", // Soft easing effect
+                    ease: "power3.inOut", // Soft easing effect
                 });
             },
         });
