@@ -52,7 +52,16 @@
           }
         }
       },
-      "items": {}
+      "items": {
+        "avatar": {
+          "type": "Image",
+          "config": {
+            "label": "Avatar",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      }
     }
   ]
 }

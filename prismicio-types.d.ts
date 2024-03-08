@@ -517,12 +517,78 @@ export type SettingsDocument<Lang extends string = string> =
     Lang
   >;
 
+type TestTypeDocumentDataSlicesSlice = TestSliceSlice;
+
+/**
+ * Content for Test Type documents
+ */
+interface TestTypeDocumentData {
+  /**
+   * Slice Zone field in *Test Type*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_type.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<TestTypeDocumentDataSlicesSlice> /**
+   * Meta Description field in *Test Type*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: test_type.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Test Type*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_type.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+
+  /**
+   * Meta Title field in *Test Type*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: test_type.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Test Type document from Prismic
+ *
+ * - **API ID**: `test_type`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TestTypeDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<TestTypeDocumentData>,
+    "test_type",
+    Lang
+  >;
+
 export type AllDocumentTypes =
   | BlogPostDocument
   | HomepageDocument
   | PageDocument
   | ProjectDocument
-  | SettingsDocument;
+  | SettingsDocument
+  | TestTypeDocument;
 
 /**
  * Primary content in *Biography → Primary*
@@ -580,6 +646,21 @@ export interface BiographySliceDefaultPrimary {
 }
 
 /**
+ * Primary content in *Biography → Items*
+ */
+export interface BiographySliceDefaultItem {
+  /**
+   * Avatar field in *Biography → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: biography.items[].avatar
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  avatar: prismic.ImageField<never>;
+}
+
+/**
  * Default variation for Biography Slice
  *
  * - **API ID**: `default`
@@ -589,7 +670,7 @@ export interface BiographySliceDefaultPrimary {
 export type BiographySliceDefault = prismic.SharedSliceVariation<
   "default",
   Simplify<BiographySliceDefaultPrimary>,
-  never
+  Simplify<BiographySliceDefaultItem>
 >;
 
 /**
@@ -962,6 +1043,96 @@ export type TechListSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *TestSlice → Primary*
+ */
+export interface TestSliceSliceDefaultPrimary {
+  /**
+   * Header field in *TestSlice → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_slice.primary.header
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  header: prismic.KeyTextField;
+
+  /**
+   * Tags field in *TestSlice → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_slice.primary.tags
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  tags: prismic.KeyTextField;
+
+  /**
+   * Test Photo field in *TestSlice → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_slice.primary.test_photo
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  test_photo: prismic.ImageField<never>;
+}
+
+/**
+ * Primary content in *TestSlice → Items*
+ */
+export interface TestSliceSliceDefaultItem {
+  /**
+   * Test Text Blcok field in *TestSlice → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_slice.items[].test_text_blcok
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  test_text_blcok: prismic.RichTextField;
+
+  /**
+   * Test Link field in *TestSlice → Items*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: test_slice.items[].test_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  test_link: prismic.LinkField;
+}
+
+/**
+ * Default variation for TestSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TestSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<TestSliceSliceDefaultPrimary>,
+  Simplify<TestSliceSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *TestSlice*
+ */
+type TestSliceSliceVariation = TestSliceSliceDefault;
+
+/**
+ * TestSlice Shared Slice
+ *
+ * - **API ID**: `test_slice`
+ * - **Description**: TestSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TestSliceSlice = prismic.SharedSlice<
+  "test_slice",
+  TestSliceSliceVariation
+>;
+
+/**
  * Primary content in *TextBlock → Primary*
  */
 export interface TextBlockSliceDefaultPrimary {
@@ -1031,9 +1202,13 @@ declare module "@prismicio/client" {
       SettingsDocument,
       SettingsDocumentData,
       SettingsDocumentDataNavItemItem,
+      TestTypeDocument,
+      TestTypeDocumentData,
+      TestTypeDocumentDataSlicesSlice,
       AllDocumentTypes,
       BiographySlice,
       BiographySliceDefaultPrimary,
+      BiographySliceDefaultItem,
       BiographySliceVariation,
       BiographySliceDefault,
       ContentIndexSlice,
@@ -1058,6 +1233,11 @@ declare module "@prismicio/client" {
       TechListSliceDefaultItem,
       TechListSliceVariation,
       TechListSliceDefault,
+      TestSliceSlice,
+      TestSliceSliceDefaultPrimary,
+      TestSliceSliceDefaultItem,
+      TestSliceSliceVariation,
+      TestSliceSliceDefault,
       TextBlockSlice,
       TextBlockSliceDefaultPrimary,
       TextBlockSliceVariation,

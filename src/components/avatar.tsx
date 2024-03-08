@@ -3,18 +3,19 @@
 
 import { ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { gsap } from "gsap";
 
 
 
 type AvatarProps = {
-    image: ImageField;
+    images: ImageField[];
     className?: string;
 };
 
-export default function Avatar({ image, className }: AvatarProps) {
+export default function Avatar({ images, className }: AvatarProps) {
+    const [currentIndex, setCurrentIndex] = useState(0);
     const component = useRef(null)
 
 
@@ -64,16 +65,36 @@ export default function Avatar({ image, className }: AvatarProps) {
             };
         }, component);
     },[]);
+
+    const handleClick = () => {
+        gsap.to(".avatar-image", {
+            opacity: 0, // Fade out the current image
+            duration: 0.3, // Set transition time
+            onComplete: () => {
+                setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+                gsap.to(".avatar-image", {
+                    opacity: 1, // Fade in the new image
+                    duration: 0.3, // Set transition time
+                    ease: "power4.inOut", // Soft easing effect
+                });
+            },
+        });
+    };
         
     return (
-        <div ref={component} className={clsx("relative h-ful w-full", className)}>
+        <div
+            ref={component}
+            className={clsx("relative h-full w-full", className)}
+            onClick={handleClick}
+            style= {{cursor: "pointer"}}
+        >
             <div className="avatar aspect-square overflow-hidden rounded-3xl border-2 border-slate-700 opacity-0">
-                <PrismicNextImage 
-                    field={image} 
-                    className="avatar-image h-full w-full object-cover" 
+                <PrismicNextImage
+                    field={images[currentIndex]}
+                    className="avatar-image h-full w-full object-cover"
                     imgixParams={{ q: 90 }}
-                    />
-                    <div className="highlight absolute inset-0 hidden w-full scale -110 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 md:block"></div>
+                />
+                <div className="highlight absolute inset-0 hidden w-full scale -110 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 md:block"></div>
             </div>
         </div>
     );

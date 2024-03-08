@@ -33,7 +33,8 @@ const Biography = ({ slice }: BiographyProps): JSX.Element => {
           label={slice.primary.button_text}
         />
 
-        <Avatar image={slice.primary.avatar} className="row-start-1 max-w-sm md:col-start-2 md:row-end-3" />
+        {/* Avatar Click Change Image */}
+        <Avatar images={slice.items.map(item => item.avatar)} className="row-start-1 max-w-sm md:col-start-2 md:row-end-3" />
       </div>
     </Bounded>
   );
